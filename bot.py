@@ -34,6 +34,8 @@ from telegram.ext import (
     filters,
 )
 
+
+
 # ===== CONFIG =====
 BOT_TOKEN = "8e5m8a0l5df3s2y2bw63gkodur546ywixrs5wqpvnxgmr74k2wof1wieuk2zo9td"
 
@@ -118,6 +120,28 @@ LABEL_MAP: Dict[str, str] = {
     "Chassis":      "VIN",
     "Moteur":       "Engine No.",
 }
+
+
+import os, threading
+from http.server import BaseHTTPRequestHandler, HTTPServer
+
+def start_health_server():
+    port = int(os.getenv("PORT", "0") or 0)
+    if port <= 0:
+        return
+    class Handler(BaseHTTPRequestHandler):
+        def do_GET(self):
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(b"OK")
+        def log_message(self, *args, **kwargs):
+            pass  # silence access logs
+    srv = HTTPServer(("", port), Handler)
+    t = threading.Thread(target=srv.serve_forever, daemon=True)
+    t.start()
+    print(f"🌐 Health server listening on :{port}")
+
+
 
 # ===== Patterns =====
 PLATE_REGEX = re.compile(r"^\s*([A-Za-z])\s*[-_ ]?\s*(\d{1,6})\s*$")   # e.g., B1000
@@ -531,7 +555,8 @@ def build_app():
 
 if __name__ == "__main__":
     print("✅ Bot is starting…")
-    ensure_db()  # <-- download plates.db if missing
+    ensure_db()  # keep this if you’re using the auto-download
+    start_health_server()  # <-- add this line
     app = build_app()
     print("🚀 Bot is running. Press Ctrl+C to stop.")
     try:
