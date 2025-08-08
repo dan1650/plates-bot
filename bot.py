@@ -42,7 +42,7 @@ BOT_TOKEN = "8e5m8a0l5df3s2y2bw63gkodur546ywixrs5wqpvnxgmr74k2wof1wieuk2zo9td"
 # Direct download link to your DB (Dropbox: change ?dl=0 -> ?dl=1)
 # Example: "https://www.dropbox.com/s/<id>/plates.db?dl=1"
 # Avoid Google Drive for 900MB unless you know how to bypass the virus-scan page.
-DB_URL  = "https://wetransfer.com/download/local-bartender?id=eyJhcGlCYXNlIjoiL2FwaS92NCIsImRkUHJveHlCYXNlIjoiaHR0cHM6Ly9sb2NhbC1iYXJ0ZW5kZXItZGQtcHJveHkud2V0cmFuc2Zlci5uZXQvYXBpIiwidHJhbnNmZXJJZCI6IjlmYzc3ZDJkOThjZTQyMzg3NmFiNTJiMTY0ZmYwZGI4MjAyNTA4MDgyMDU1MzMiLCJzZWNyZXQiOiJkMDBkMWIiLCJpbnRlbnQiOiJlbnRpcmVfdHJhbnNmZXIiLCJzaG91bGRVc2VOZXdIYW5kbGVGbG93IjoidHJ1ZSIsInJlY2lwaWVudElkIjoiMTg1N2RlM2NkNmNiMDdjZjFhNjUyMTQzNWUyNTU0NjIyMDI1MDgwODIwNTU0MSIsImxvY2FsU3RvcmFnZUlkIjoiNTdhMzBmZGMtNTc5NS00OGI4LWI4NzEtZTI2YmFlZTM5NjFmIn0%3D"
+DB_URL  = "https://www.dropbox.com/scl/fi/j6xyyiln91g1pvf4ujov8/plates.db?rlkey=u4vztrctbgw4c1so9pg5w7urq&st=ylthhfeo&dl=1"
 DB_PATH = "./plates.db"
 
 TABLE_NAME    = "CARMDI"
@@ -563,3 +563,4 @@ if __name__ == "__main__":
         app.run_polling()
     finally:
         print("✅ Clean exit.")
+
