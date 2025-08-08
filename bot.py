@@ -37,7 +37,7 @@ from telegram.ext import (
 
 
 # ===== CONFIG =====
-BOT_TOKEN = "8e5m8a0l5df3s2y2bw63gkodur546ywixrs5wqpvnxgmr74k2wof1wieuk2zo9td"
+BOT_TOKEN = "8282229702:AAGDnQTsd3GcHoYEHUEAc7uB0_zCaI8GiyU"
 
 # Direct download link to your DB (Dropbox: change ?dl=0 -> ?dl=1)
 # Example: "https://www.dropbox.com/s/<id>/plates.db?dl=1"
@@ -563,4 +563,5 @@ if __name__ == "__main__":
         app.run_polling()
     finally:
         print("✅ Clean exit.")
+
 
