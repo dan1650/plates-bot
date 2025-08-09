@@ -121,7 +121,6 @@ LABEL_MAP: Dict[str, str] = {
     "Moteur":       "Engine No.",
 }
 
-
 import os, threading
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
@@ -129,17 +128,31 @@ def start_health_server():
     port = int(os.getenv("PORT", "0") or 0)
     if port <= 0:
         return
+
     class Handler(BaseHTTPRequestHandler):
-        def do_GET(self):
+        def _ok(self):
             self.send_response(200)
+            self.send_header("Content-Type", "text/plain; charset=utf-8")
             self.end_headers()
-            self.wfile.write(b"OK")
+
+        def do_GET(self):
+            self._ok()
+            try:
+                self.wfile.write(b"OK")
+            except BrokenPipeError:
+                pass
+
+        def do_HEAD(self):
+            # UptimeRobot often uses HEAD; respond 200 with no body
+            self._ok()
+
         def log_message(self, *args, **kwargs):
             pass  # silence access logs
+
     srv = HTTPServer(("", port), Handler)
-    t = threading.Thread(target=srv.serve_forever, daemon=True)
-    t.start()
+    threading.Thread(target=srv.serve_forever, daemon=True).start()
     print(f"🌐 Health server listening on :{port}")
+
 
 
 
@@ -563,6 +576,7 @@ if __name__ == "__main__":
         app.run_polling()
     finally:
         print("✅ Clean exit.")
+
 
 
 
