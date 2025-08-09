@@ -1,7 +1,7 @@
 """
 Telegram lookup bot — CARMDI
 - Plate search: "B1000" (1 letter + number)
-- Number-only: "2259" → all regions with ActualNB=2259
+- Number-only: "1000" → all regions with ActualNB=1000
 - Phone search (legacy): exact on normalized variants, fallback to suffix (7/6)
 - DB autoload: downloads plates.db at startup if missing (900 MB OK)
 - Emoji UI, duplicate chooser, logs user texts only (quiet HTTP)
@@ -145,7 +145,7 @@ def start_health_server():
 
 # ===== Patterns =====
 PLATE_REGEX = re.compile(r"^\s*([A-Za-z])\s*[-_ ]?\s*(\d{1,6})\s*$")   # e.g., B1000
-NUMBER_ONLY_REGEX = re.compile(r"^\s*(\d{1,6})\s*$")                   # e.g., 2259
+NUMBER_ONLY_REGEX = re.compile(r"^\s*(\d{1,6})\s*$")                   # e.g., 1000
 PHONE_LIKE_REGEX = re.compile(r"(?:\D*\d){6,}")                        # ≥6 digits anywhere
 
 RATE_LIMIT_SECONDS = 1.0
@@ -366,7 +366,7 @@ def main_keyboard() -> ReplyKeyboardMarkup:
     return ReplyKeyboardMarkup(
         [[KeyboardButton("🔍 Examples"), KeyboardButton("❓ Help")]],
         resize_keyboard=True,
-        input_field_placeholder="Type B1000, 2259, or a phone number",
+        input_field_placeholder="Type B1000, 1000, or a phone number",
     )
 
 def result_keyboard(plate_code: str) -> InlineKeyboardMarkup:
@@ -408,7 +408,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     logger.info("/start from %s (id=%s) chat=%s", user.username or user.full_name, user.id, update.effective_chat.id)
     await update.message.reply_html(
         "<b>Welcome!</b>\n"
-        "Send a plate like <b>B1000</b>, a plain number like <b>2259</b> (all regions), or a <b>phone number</b>.",
+        "Send a plate like <b>B1000</b>, a plain number like <b>1000</b> (all regions), or a <b>phone number</b>.",
         reply_markup=main_keyboard(),
     )
 
@@ -418,7 +418,7 @@ async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_html(
         "<b>How to use</b>\n"
         "• Plate: <code>B1000</code> (1 letter + digits). Dashes/spaces ok: <code>B-1000</code>, <code>B 1000</code>\n"
-        "• Number only: <code>2259</code> → all regions with that number\n"
+        "• Number only: <code>1000</code> → all regions with that number\n"
         "• Phone: any format; I normalize (exact → suffix fallback).",
         reply_markup=main_keyboard(),
     )
@@ -427,7 +427,7 @@ async def examples_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     logger.info("Pressed 'Examples' button: %s (id=%s) chat=%s", user.username or user.full_name, user.id, update.effective_chat.id)
     await update.message.reply_html(
-        "Try: <code>B1000</code>, <code>2259</code>, <code>03/681764</code>, <code>+9613681764</code>",
+        "Try: <code>B1000</code>, <code>1000</code>, <code>03/000000</code>, <code>+9613000000</code>",
         reply_markup=main_keyboard(),
     )
 
@@ -536,7 +536,7 @@ async def on_plate_or_phone(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return await present_results(update, context, results, f"phone {text}")
 
     return await update.message.reply_html(
-        "I didn’t recognize that. Send a plate like <b>B1000</b>, a number like <b>2259</b>, or a <b>phone number</b>.",
+        "I didn’t recognize that. Send a plate like <b>B1000</b>, a number like <b>1000</b>, or a <b>phone number</b>.",
         reply_markup=main_keyboard(),
     )
 
@@ -563,5 +563,6 @@ if __name__ == "__main__":
         app.run_polling()
     finally:
         print("✅ Clean exit.")
+
 
 
